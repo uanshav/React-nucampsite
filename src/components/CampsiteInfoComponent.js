@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 const maxLength = len => val => !val || (val.length <= len);
 const minLength = len => val => val && (val.length >= len);
-function RenderComments({ comments, addComment, campsiteId }) {
+function RenderComments({ comments, postComment, campsiteId }) {
     if (comments) {
         return (
             <div className="col-md-5 m-1">
@@ -25,7 +25,7 @@ function RenderComments({ comments, addComment, campsiteId }) {
                         )
                     })
                 }
-                <CommentForm campsiteId={campsiteId} addComment={addComment} />
+                <CommentForm campsiteId={campsiteId} postComment={postComment} />
             </div>
         )
     }
@@ -54,7 +54,7 @@ class CommentForm extends Component {
 
     handleSubmit(value) {
         this.toggleModal();
-        this.props.addComment(this.props.campsiteId, value.rating, value.author, value.text);
+        this.props.postComment(this.props.campsiteId, value.rating, value.author, value.text);
         console.log(`Current state is : ${JSON.stringify(value)} `)
         alert(`Current state is : ${JSON.stringify(value)} `);
     }
@@ -165,8 +165,9 @@ function CampsiteInfo(props) {
                 </div>
                 <div className="row">
                     <RenderCampsite campsite={props.campsite} />
-                    <RenderComments comments={props.comments}
-                        addComment={props.addComment}
+                    <RenderComments
+                        comments={props.comments}
+                        postComment={props.postComment}
                         campsiteId={props.campsite.id}
                     />
                 </div>
