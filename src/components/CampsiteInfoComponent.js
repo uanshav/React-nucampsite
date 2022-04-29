@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const maxLength = len => val => !val || (val.length <= len);
 const minLength = len => val => val && (val.length >= len);
-function RenderComments({ comments }) {
+function RenderComments({ comments, addComment, campsiteId }) {
     if (comments) {
         return (
             <div className="col-md-5 m-1">
@@ -23,14 +23,14 @@ function RenderComments({ comments }) {
                         )
                     })
                 }
-                <CommentFrom />
+                <CommentForm campsiteId={campsiteId} addComment={addComment}/>
             </div>
         )
     }
     return <div />;
 }
 
-class CommentFrom extends Component {
+class CommentForm extends Component {
 
     constructor(props) {
         super(props);
@@ -52,6 +52,7 @@ class CommentFrom extends Component {
 
     handleSubmit(value) {
         this.toggleModal();
+        this.props.addComment(this.props.campsiteId, value.rating, value.author, value.text);
         console.log(`Current state is : ${JSON.stringify(value)} `)
         alert(`Current state is : ${JSON.stringify(value)} `);
     }
@@ -142,7 +143,11 @@ function CampsiteInfo(props) {
                 </div>
                 <div className="row">
                     <RenderCampsite campsite={props.campsite} />
-                    <RenderComments comments={props.comments} />
+                    <RenderComments comments={props.comments}
+                        addComment={props.addComment}
+                        campsiteId={props.campsite.id}
+
+                    />
                 </div>
             </div>
         );
